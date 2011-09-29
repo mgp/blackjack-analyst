@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
