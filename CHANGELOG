@@ -1,0 +1,12 @@
+Version 1.01
+* Added option for insurance (see PlayerStrategy).
+* Updated observer interfaces to report insurance.
+* Updated observer interfaces to show hand won/lost/pushed on.
+* Fixed bug in BasicStrategyPlayer where would try to DD on more than 2 cards.
+* Made bets of TrueCountBetPlayer more aggressive.
+* TrueCountBetPlayer now inherits from BasicStrategyPlayer.
+* ModifiedBasicStrategyPlayer now inherits from TrueCountBetPlayer.
+* Added AbstractPlayerObserver and AbstractTableObserver.
+
+Version 1.0
+* Initial release
