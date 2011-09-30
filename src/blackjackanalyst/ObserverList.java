@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -29,14 +29,13 @@ import java.util.List;
  * 
  * @author Michael Parker
  * 
- * @param <T>
- * the type of observer in the list
+ * @param <T> the type of observer in the list
  */
-public class ObserverList<T> {
-	protected List<T> obs_list;
+public class ObserverList<T> implements Iterable<T> {
+	protected List<T> observers;
 
 	protected ObserverList() {
-		obs_list = new LinkedList<T>();
+		observers = new LinkedList<T>();
 	}
 
 	/**
@@ -45,32 +44,29 @@ public class ObserverList<T> {
 	 * @return the size of the observer list
 	 */
 	public int size() {
-		return obs_list.size();
+		return observers.size();
 	}
 
 	/**
-	 * Returns whether the observer list is empty, meaning its size equals
-	 * <code>0</code>.
+	 * Returns whether the observer list is empty, meaning {@link #size()} returns
+	 * {@code 0}.
 	 * 
-	 * @return <code>true</code> if the observer list is empty,
-	 * <code>false</code> otherwise
+	 * @return {@code true} if the observer list is empty, {@code false} otherwise
 	 */
 	public boolean isEmpty() {
-		return obs_list.isEmpty();
+		return observers.isEmpty();
 	}
 
 	/**
-	 * Returns whether the list contains the given observer. If the parameter
-	 * <code>obj</code> is <code>null</code>, this method returns
-	 * <code>false</code>.
+	 * Returns whether the list contains the given observer. If the parameter is
+	 * {@code null}, this method returns {@code false}.
 	 * 
-	 * @param obj
-	 * the observer to query for membership in the list
-	 * @return <code>true</code> if the list contains the observer,
-	 * <code>false</code> otherwise
+	 * @param observer the observer to query for membership in the list
+	 * @return {@code true} if the list contains the observer, {@code false}
+	 *         otherwise
 	 */
-	public boolean contains(T obj) {
-		return (obj != null) ? obs_list.contains(obj) : false;
+	public boolean contains(T observer) {
+		return (observer != null) ? observers.contains(observer) : false;
 	}
 
 	/**
@@ -79,42 +75,39 @@ public class ObserverList<T> {
 	 * @return an iterator over the observer list
 	 */
 	public Iterator<T> iterator() {
-		return obs_list.iterator();
+		return observers.iterator();
 	}
 
 	/**
-	 * Adds the given observer to the list of observers. If the parameter
-	 * <code>obj</code> is <code>null</code>, this method returns
-	 * <code>false</code> and the underlying list remains unchanged.
+	 * Adds the given observer to the list of observers. If the parameter is
+	 * {@code null}, this method returns {@code false} and the underlying list
+	 * remains unchanged.
 	 * 
-	 * @param obj
-	 * the observer to add to the list
-	 * @return <code>true</code> if the observer is added to the list,
-	 * <code>false</code> otherwise
+	 * @param observer the observer to add to the list
+	 * @return {@code true} if the observer is added to the list, {@code false}
+	 *         otherwise
 	 */
-	public boolean add(T obj) {
-		return (obj != null) ? obs_list.add(obj) : false;
+	public boolean add(T observer) {
+		return (observer != null) ? observers.add(observer) : false;
 	}
 
 	/**
-	 * Removes the given observer from the list of observers. If the parameter
-	 * <code>obj</code> is <code>null</code> or the list does not contain
-	 * the observer, this method returns <code>false</code> and the underlying
-	 * list remains unchanged.
+	 * Removes the given observer from the list of observers. If the parameter is
+	 * {@code null} or the list does not contain the observer, this method returns
+	 * {@code false} and the underlying list remains unchanged.
 	 * 
-	 * @param obj
-	 * the observer to remove from the list
-	 * @return <code>true</code> if the observer is removed from the list,
-	 * <code>false</code> otherwise
+	 * @param observer the observer to remove from the list
+	 * @return {@code true} if the observer is removed from the list,
+	 *         {@code false} otherwise
 	 */
-	public boolean remove(T obj) {
-		return (obj != null) ? obs_list.remove(obj) : true;
+	public boolean remove(T observer) {
+		return (observer != null) ? observers.remove(observer) : true;
 	}
 
 	/**
 	 * Removes all the observers from the list.
 	 */
 	public void clear() {
-		obs_list.clear();
+		observers.clear();
 	}
 }

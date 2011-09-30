@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -33,70 +33,67 @@ import java.util.TreeSet;
  * @author Michael Parker
  */
 public class Hand {
-	protected final List<Card> hand_cards;
-	protected final List<Card> hand_cards_ro;
+	protected final List<Card> cards;
+	protected final List<Card> cardsReadOnly;
 	protected boolean finished;
 
-	protected final TreeSet<Integer> hand_values;
-	protected final Set<Integer> hand_values_ro;
-	protected int max_valid;
+	protected final TreeSet<Integer> handValues;
+	protected final Set<Integer> handValuesReadOnly;
+	protected int highValidValue;
 
 	protected Hand() {
-		hand_cards = new LinkedList<Card>();
-		hand_cards_ro = Collections.unmodifiableList(hand_cards);
+		cards = new LinkedList<Card>();
+		cardsReadOnly = Collections.unmodifiableList(cards);
 
-		hand_values = new TreeSet<Integer>();
-		hand_values_ro = Collections.unmodifiableSet(hand_values);
-		
-		max_valid = 0;
+		handValues = new TreeSet<Integer>();
+		handValuesReadOnly = Collections.unmodifiableSet(handValues);
+
+		highValidValue = 0;
 	}
-	
+
 	/**
 	 * Creates a new hand containing the given card.
 	 * 
-	 * @param _first
-	 * the card to add to the new hand
+	 * @param firstCard the card to add to the new hand
 	 */
-	protected Hand(Card _first) {
+	protected Hand(Card firstCard) {
 		this();
 		// add first card to hand
-		add(_first);
+		add(firstCard);
 	}
 
 	/**
 	 * Creates a new hand containing the given cards.
 	 * 
-	 * @param _first
-	 * the card to add to the new hand first
-	 * @param _second
-	 * the card to add to the new hand second
+	 * @param firstCard the card to add to the new hand first
+	 * @param secondCard the card to add to the new hand second
 	 */
-	protected Hand(Card _first, Card _second) {
+	protected Hand(Card firstCard, Card secondCard) {
 		this();
 		// add both cards to hand
-		add(_first);
-		add(_second);
+		add(firstCard);
+		add(secondCard);
 	}
 
 	/**
-	 * Returns a list containing the cards in the hand, appearing in the order
-	 * in which they were added. The returned list may not be modified.
+	 * Returns a list containing the cards in the hand, appearing in the order in
+	 * which they were added. The returned list may not be modified.
 	 * 
 	 * @return the list of cards in the hand
 	 */
 	public List<Card> getCards() {
-		return hand_cards_ro;
+		return cardsReadOnly;
 	}
 
 	/**
-	 * Returns the highest possible value that can be made from the hand, but
-	 * does not exceed 21. If no such value exists, meaning that this hand has
-	 * busted, this method returns <code>-1</code>.
+	 * Returns the highest possible value that can be made from the hand, but does
+	 * not exceed 21. If no such value exists, meaning that this hand has busted,
+	 * this method returns {@code -1}.
 	 * 
 	 * @return the highest possible hand value not exceeding 21
 	 */
 	public int getHighValidValue() {
-		return max_valid;
+		return highValidValue;
 	}
 
 	/**
@@ -106,7 +103,7 @@ public class Hand {
 	 * @return the lowest possible hand value
 	 */
 	public int getLowValue() {
-		return hand_values.first();
+		return handValues.first();
 	}
 
 	/**
@@ -116,7 +113,7 @@ public class Hand {
 	 * @return the highest possible hand value
 	 */
 	public int getHighValue() {
-		return hand_values.last();
+		return handValues.last();
 	}
 
 	/**
@@ -126,15 +123,14 @@ public class Hand {
 	 * @return all possible hand values
 	 */
 	public Set<Integer> getValues() {
-		return hand_values_ro;
+		return handValuesReadOnly;
 	}
 
 	/**
 	 * Returns whether the hand has busted, meaning that the smallest possible
 	 * hand value is greater than 21.
 	 * 
-	 * @return <code>true</code> if the hand has busted, <code>false</code>
-	 * otherwise
+	 * @return {@code true} if the hand has busted, {@code false} otherwise
 	 */
 	public boolean isBusted() {
 		return (getLowValue() > 21);
@@ -144,94 +140,89 @@ public class Hand {
 	 * Returns whether the current hand is a blackjack, which is an ace and a
 	 * ten-valued card.
 	 * 
-	 * @return <code>true</code> if the hand is a blackjack,
-	 * <code>false</code> otherwise
+	 * @return {@code true} if the hand is a blackjack, {@code false} otherwise
 	 */
 	public boolean isBlackjack() {
-		return ((hand_cards.size() == 2) && (getHighValidValue() == 21));
+		return ((cards.size() == 2) && (getHighValidValue() == 21));
 	}
 
 	/**
 	 * Returns whether the hand is soft, meaning that it has not busted and
-	 * whether the highest value that does not exceed 21 contains an ace valued
-	 * as 11.
+	 * whether the highest value that does not exceed 21 contains an ace valued as
+	 * 11.
 	 * 
-	 * @return <code>true</code> if the hand is soft, <code>false</code>
-	 * otherwise
+	 * @return {@code true} if the hand is soft, {@code false} otherwise
 	 */
 	public boolean isSoft() {
 		return (!isBusted() && (getLowValue() <= (getHighValidValue() - 10)));
 	}
-	
+
 	/**
-	 * Returns whether this hand is finished. The hand is finished if the 
-	 * player or dealer has stood or busted, or if the player has doubled down 
-	 * and received his or her final card.
+	 * Returns whether this hand is finished. The hand is finished if the player
+	 * or dealer has stood or busted, or if the player has doubled down and
+	 * received his or her final card.
 	 * 
-	 * @return
-	 * <code>true</code> if the hand is finished, <code>false</code> otherwise
+	 * @return {@code true} if the hand is finished, {@code false} otherwise
 	 */
 	public boolean isFinished() {
 		return finished;
 	}
-	
-	protected final void add(Card dealt_card) {
-		if (hand_cards.isEmpty()) {
+
+	protected final void add(Card card) {
+		if (cards.isEmpty()) {
 			// add first card dealt to hand
-			hand_cards.add(dealt_card);
-			if (dealt_card.isAce()) {
+			cards.add(card);
+			if (card.isAce()) {
 				// add both values for ace
-				hand_values.add(1);
-				hand_values.add(11);
-				max_valid = 11;
-			}
-			else {
+				handValues.add(1);
+				handValues.add(11);
+				highValidValue = 11;
+			} else {
 				// not ace, add single value
-				int card_value = dealt_card.getValue();
-				hand_values.add(card_value);
-				max_valid = card_value;
+				int cardValue = card.getValue();
+				handValues.add(cardValue);
+				highValidValue = cardValue;
 			}
 			return;
 		}
-		
+
 		// update all possible hand values
-		max_valid = -1;
-		TreeSet<Integer> new_values = new TreeSet<Integer>();
-		for (Iterator<Integer> i = hand_values.iterator(); i.hasNext();) {
-			int curr_value = i.next();
-			int new_value;
-			if (dealt_card.isAce()) {
+		highValidValue = -1;
+		TreeSet<Integer> newValues = new TreeSet<Integer>();
+		for (Iterator<Integer> i = handValues.iterator(); i.hasNext();) {
+			int currValue = i.next();
+			int newValue;
+			if (card.isAce()) {
 				// update low value for ace
-				new_value = curr_value + 1;
-				new_values.add(new_value);
-				if ((new_value <= 21) && (new_value > max_valid)) {
-					max_valid = new_value;
+				newValue = currValue + 1;
+				newValues.add(newValue);
+				if ((newValue <= 21) && (newValue > highValidValue)) {
+					highValidValue = newValue;
 				}
 				// update high value for ace
-				new_value = curr_value + 11;
-				new_values.add(new_value);
-				if ((new_value <= 21) && (new_value > max_valid)) {
-					max_valid = new_value;
+				newValue = currValue + 11;
+				newValues.add(newValue);
+				if ((newValue <= 21) && (newValue > highValidValue)) {
+					highValidValue = newValue;
 				}
-			}
-			else {
+			} else {
 				// not ace, update single value
-				new_value = curr_value + dealt_card.getValue();
-				new_values.add(new_value);
-				if ((new_value <= 21) && (new_value > max_valid)) {
-					max_valid = new_value;
+				newValue = currValue + card.getValue();
+				newValues.add(newValue);
+				if ((newValue <= 21) && (newValue > highValidValue)) {
+					highValidValue = newValue;
 				}
 			}
 		}
-		hand_values.clear();
-		hand_values.addAll(new_values);
+		handValues.clear();
+		handValues.addAll(newValues);
 		// add card to hand
-		hand_cards.add(dealt_card);
+		cards.add(card);
 	}
 
 	public String toString() {
-		StringBuffer sbuf = new StringBuffer(512);
-		for (Iterator<Card> i = hand_cards.iterator(); i.hasNext(); ) {
+		StringBuilder sbuf = new StringBuilder(512);
+		for (Iterator<Card> i = cards.iterator(); i.hasNext();) {
 			Card next_card = i.next();
 			sbuf.append(next_card.toString());
 			if (i.hasNext()) {
@@ -240,12 +231,10 @@ public class Hand {
 		}
 		sbuf.append(" (");
 		if (isBlackjack()) {
-			sbuf.append("BJ");
-		}
-		else if (isBusted()) {
+			sbuf.append("Blackjack");
+		} else if (isBusted()) {
 			sbuf.append(getLowValue());
-		}
-		else {
+		} else {
 			sbuf.append(getHighValidValue());
 		}
 		sbuf.append(')');

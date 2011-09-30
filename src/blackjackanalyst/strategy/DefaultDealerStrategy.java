@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -29,22 +29,12 @@ import blackjackanalyst.Hand;
  * 
  * @author Michael Parker
  */
-public class DefaultDealer implements DealerStrategy {
-	protected static DefaultDealer _instance;
+public class DefaultDealerStrategy implements DealerStrategy {
+	public static final DefaultDealerStrategy INSTANCE = new DefaultDealerStrategy();
 
-	public static DefaultDealer getInstance() {
-		if (_instance == null) {
-			_instance = new DefaultDealer();
-		}
-		return _instance;
-	}
-
-	protected DefaultDealer() {
-	}
-
-	public DealerStrategyAction getAction(Hand dealer_hand) {
-		int best_value = dealer_hand.getHighValidValue();
-		if ((best_value > 17) || ((best_value == 17) && !dealer_hand.isSoft())) {
+	public DealerStrategyAction getAction(Hand hand) {
+		int bestValue = hand.getHighValidValue();
+		if ((bestValue > 17) || ((bestValue == 17) && !hand.isSoft())) {
 			return DealerStrategyAction.STAND;
 		}
 		return DealerStrategyAction.HIT;

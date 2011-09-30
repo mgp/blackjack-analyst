@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -27,22 +27,21 @@ import blackjackanalyst.PlayerObserver;
 import blackjackanalyst.Table;
 
 /**
- * An implementation of interface <code>PlayerObserver</code> that writes to
- * the console.
+ * An implementation of interface {@link PlayerObserver} that writes to the
+ * console.
  * 
  * @author Michael Parker
  */
 public class ConsolePlayerObserver implements PlayerObserver {
-	protected final Player p;
+	protected final Player player;
 
 	/**
 	 * Creates a new player observer that writes to the console.
 	 * 
-	 * @param _p
-	 * the player to observe
+	 * @param player the player to observe
 	 */
-	public ConsolePlayerObserver(Player _p) {
-		p = _p;
+	public ConsolePlayerObserver(Player player) {
+		this.player = player;
 	}
 
 	/**
@@ -51,81 +50,82 @@ public class ConsolePlayerObserver implements PlayerObserver {
 	 * @return the observed player
 	 */
 	public Player getPlayer() {
-		return p;
+		return player;
 	}
 
-	public void playerJoins(Table t) {
-		System.out.println(p.getName() + " joins table " + t.getName());
+	public void playerJoins(Table table) {
+		System.out.println(player.getName() + " joins table " + table.getName());
 	}
 
-	public void playerLeaves(Table t) {
-		System.out.println(p.getName() + " leaves table " + t.getName());
+	public void playerLeaves(Table table) {
+		System.out.println(player.getName() + " leaves table " + table.getName());
 	}
 
-	public void playerBets(int bet_amount, int bankroll) {
-		System.out.println(p.getName() + " bets " + bet_amount);
+	public void playerBets(int betAmount, int bankroll) {
+		System.out.println(player.getName() + " bets " + betAmount);
 	}
-	
-	public void playerInsures(int bet_amount, int bankroll) {
-		if (bet_amount > 0) {
-			System.out.println(p.getName() + " insures " + bet_amount);
+
+	public void playerInsures(int betAmount, int bankroll) {
+		if (betAmount > 0) {
+			System.out.println(player.getName() + " insures " + betAmount);
+		} else {
+			System.out.println(player.getName() + " declines insurance");
 		}
-		else {
-			System.out.println(p.getName() + " declines insurance");
-		}
 	}
 
-	public void playerDealt(PlayerHand player_hand) {
-		System.out.println(p.getName() + " is dealt " + player_hand);
+	public void playerDealt(PlayerHand hand) {
+		System.out.println(player.getName() + " is dealt " + hand);
 	}
 
-	public void playerDraws(Card dealt_card, PlayerHand new_hand) {
-		System.out.println(p.getName() + " hits, now has hand " + new_hand);
+	public void playerDraws(Card card, PlayerHand hand) {
+		System.out.println(player.getName() + " hits, now has hand " + hand);
 	}
 
-	public void playerStands(PlayerHand player_hand) {
-		System.out.println(p.getName() + " stands with hand " + player_hand);
+	public void playerStands(PlayerHand hand) {
+		System.out.println(player.getName() + " stands with hand " + hand);
 	}
 
-	public void playerBusts(PlayerHand player_hand, int amount_lost, int new_bankroll) {
-		System.out.println(p.getName() + " busts with hand " + player_hand 
-				+ ", lost " + amount_lost);
+	public void playerBusts(PlayerHand hand, int amountLost, int newBankroll) {
+		System.out.println(player.getName() + " busts with hand " + hand
+		    + ", lost " + amountLost);
 	}
 
-	public void playerSplits(PlayerHand player_hand) {
-		System.out.println(p.getName() + " splits with hand " + player_hand);
+	public void playerSplits(PlayerHand hand) {
+		System.out.println(player.getName() + " splits with hand " + hand);
 	}
 
-	public void playerDoublesDown(Card dealt_card, PlayerHand new_hand) {
-		System.out.println(p.getName() + " doubles down, now has hand "
-				+ new_hand);
+	public void playerDoublesDown(Card card, PlayerHand hand) {
+		System.out
+		    .println(player.getName() + " doubles down, now has hand " + hand);
 	}
 
-	public void playerWins(PlayerHand player_hand, int amount_won, int new_bankroll) {
-		System.out.println(p.getName() + " beat dealer with " + 
-				player_hand.getHighValidValue() + ", won " + amount_won);
+	public void playerWins(PlayerHand hand, int amountWon, int newBankroll) {
+		System.out.println(player.getName() + " beat dealer with "
+		    + hand.getHighValidValue() + ", won " + amountWon);
 	}
 
-	public void playerLoses(PlayerHand player_hand, int amount_lost, int new_bankroll) {
-		System.out.println(p.getName() + " lost to dealer with " + 
-				player_hand.getHighValidValue() + ", lost " + amount_lost);
+	public void playerLoses(PlayerHand hand, int amountLost, int newBankroll) {
+		System.out.println(player.getName() + " lost to dealer with "
+		    + hand.getHighValidValue() + ", lost " + amountLost);
 	}
 
-	public void playerBlackjack(PlayerHand player_hand, int amount_won, int new_bankroll) {
-		System.out.println(p.getName() + " received blackjack, won "
-				+ amount_won);
+	public void playerBlackjack(PlayerHand hand, int amountWon, int newBankroll) {
+		System.out.println(player.getName() + " received blackjack, won "
+		    + amountWon);
 	}
 
-	public void playerPush(PlayerHand player_hand, int held_bankroll) {
-		System.out.println(p.getName() + " pushed with dealer on " + 
-				player_hand.getHighValidValue());
+	public void playerPush(PlayerHand hand, int heldBankroll) {
+		System.out.println(player.getName() + " pushed with dealer on "
+		    + hand.getHighValidValue());
 	}
 
-	public void playerWinsInsurance(int amount_won, int new_bankroll) {
-		System.out.println(p.getName() + " won " + amount_won + " on insurance");
+	public void playerWinsInsurance(int amountWon, int newBankroll) {
+		System.out
+		    .println(player.getName() + " won " + amountWon + " on insurance");
 	}
 
-	public void playerLosesInsurance(int amount_lost, int new_bankroll) {
-		System.out.println(p.getName() + " lost " + amount_lost + " on insurance");
+	public void playerLosesInsurance(int amountLost, int newBankroll) {
+		System.out.println(player.getName() + " lost " + amountLost
+		    + " on insurance");
 	}
 }

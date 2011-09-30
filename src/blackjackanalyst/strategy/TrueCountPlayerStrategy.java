@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -24,8 +24,8 @@ import blackjackanalyst.Card;
 import blackjackanalyst.PlayerHand;
 
 /**
- * A player that abides by the principles of <code>BasicStrategyPlayer</code>. 
- * Additionally, this player counts cards using the hi-lo system and a true 
+ * A player that abides by the principles of {@link BasicPlayerStrategy}.
+ * Additionally, this player counts cards using the hi-lo system and a true
  * count (TC), and adjusts his bet accordingly:
  * 
  * <ul>
@@ -38,57 +38,56 @@ import blackjackanalyst.PlayerHand;
  * 
  * @author Michael Parker
  */
-public class TrueCountBetPlayer extends BasicStrategyPlayer {
-	protected int cards_remaining;
-	protected int raw_count;
+public class TrueCountPlayerStrategy extends BasicPlayerStrategy {
+	protected int cardsRemaining;
+	protected int rawCount;
 
-	public TrueCountBetPlayer() {
+	public TrueCountPlayerStrategy() {
 		super();
 
-		cards_remaining = 8 * Card.CARDS_PER_DECK;
-		raw_count = 0;
+		cardsRemaining = 8 * Card.CARDS_PER_DECK;
+		rawCount = 0;
 	}
 
 	public void shoeShuffled() {
-		cards_remaining = 8 * Card.CARDS_PER_DECK;
-		raw_count = 0;
+		cardsRemaining = 8 * Card.CARDS_PER_DECK;
+		rawCount = 0;
 	}
 
-	public void cardDealt(Card dealt_card) {
+	public void cardDealt(Card dealtCard) {
 		// decrement cards remaining
-		--cards_remaining;
+		--cardsRemaining;
 		// adjust count accordingly
-		if (dealt_card.isAce() || (dealt_card.getValue() == 10)) {
-			--raw_count;
-		}
-		else if ((dealt_card.getValue() >= 2) && (dealt_card.getValue() <= 6)) {
-			++raw_count;
+		if (dealtCard.isAce() || (dealtCard.getValue() == 10)) {
+			--rawCount;
+		} else if ((dealtCard.getValue() >= 2) && (dealtCard.getValue() <= 6)) {
+			++rawCount;
 		}
 	}
 
 	public int getBet(int bankroll) {
 		// get the true count and bet accordingly
-		float tc = (raw_count * Card.CARDS_PER_DECK) / ((float) cards_remaining);
+		float trueCount = (rawCount * Card.CARDS_PER_DECK) / ((float) cardsRemaining);
 
-		if (tc <= 1f) {
-			return min_bet;
+		if (trueCount <= 1f) {
+			return minBet;
 		}
-		if (tc <= 2f) {
-			return (2 * min_bet);
+		if (trueCount <= 2f) {
+			return (2 * minBet);
 		}
-		if (tc <= 3f) {
-			return (3 * min_bet);
+		if (trueCount <= 3f) {
+			return (3 * minBet);
 		}
-		if (tc <= 4f) {
-			return (5 * min_bet);
+		if (trueCount <= 4f) {
+			return (5 * minBet);
 		}
-		return (10 * min_bet);
+		return (10 * minBet);
 	}
-	
-	public int getInsuranceBet(PlayerHand curr_hand, int bet_amount) {
+
+	public int getInsuranceBet(PlayerHand hand, int betAmount) {
 		// get the true count and bet accordingly
-		float tc = (raw_count * Card.CARDS_PER_DECK) / ((float) cards_remaining);
-		
-		return (tc >= 3f) ? (bet_amount / 2) : 0;
+		float tc = (rawCount * Card.CARDS_PER_DECK) / ((float) cardsRemaining);
+
+		return (tc >= 3f) ? (betAmount / 2) : 0;
 	}
 }

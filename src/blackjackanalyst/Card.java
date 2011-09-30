@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -43,8 +43,6 @@ public class Card {
 
 	/**
 	 * The suit of a card.
-	 * 
-	 * @author Michael Parker
 	 */
 	public static enum Suit {
 		HEARTS, DIAMONDS, SPADES, CLUBS
@@ -52,108 +50,97 @@ public class Card {
 
 	/**
 	 * The rank of a card.
-	 * 
-	 * @author Michael Parker
 	 */
 	public static enum Rank {
 		TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
 	};
 
-	protected static Suit[] all_suits = {
-			Suit.CLUBS, Suit.DIAMONDS, Suit.HEARTS, Suit.SPADES
-	};
+	protected static Suit[] ALL_SUITS = { Suit.CLUBS, Suit.DIAMONDS, Suit.HEARTS,
+	    Suit.SPADES };
 
-	protected static CardRank[] all_ranks = {
-			new CardRank(Rank.ACE, 1), new CardRank(Rank.TWO, 2),
-			new CardRank(Rank.THREE, 3), new CardRank(Rank.FOUR, 4),
-			new CardRank(Rank.FIVE, 5), new CardRank(Rank.SIX, 6),
-			new CardRank(Rank.SEVEN, 7), new CardRank(Rank.EIGHT, 8),
-			new CardRank(Rank.NINE, 9), new CardRank(Rank.TEN, 10),
-			new CardRank(Rank.JACK, 10), new CardRank(Rank.QUEEN, 10),
-			new CardRank(Rank.KING, 10)
-	};
+	private static CardRank[] ALL_RANKS = { new CardRank(Rank.ACE, 1),
+	    new CardRank(Rank.TWO, 2), new CardRank(Rank.THREE, 3),
+	    new CardRank(Rank.FOUR, 4), new CardRank(Rank.FIVE, 5),
+	    new CardRank(Rank.SIX, 6), new CardRank(Rank.SEVEN, 7),
+	    new CardRank(Rank.EIGHT, 8), new CardRank(Rank.NINE, 9),
+	    new CardRank(Rank.TEN, 10), new CardRank(Rank.JACK, 10),
+	    new CardRank(Rank.QUEEN, 10), new CardRank(Rank.KING, 10) };
 
-	protected static class CardRank {
-		protected final Rank rank_enum;
+	private static class CardRank {
+		protected final Rank rank;
 		protected final int value;
 
-		protected CardRank(Rank _card_rank, int _value) {
-			rank_enum = _card_rank;
-			value = _value;
+		protected CardRank(Rank rank, int value) {
+			this.rank = rank;
+			this.value = value;
 		}
 
 		public String toString() {
-			return rank_enum.toString();
+			return rank.toString();
 		}
 	}
 
-	protected static Suit getCardSuit(int card_id) {
-		return all_suits[card_id / CARD_RANKS];
+	private static Suit getCardSuit(int cardId) {
+		return ALL_SUITS[cardId / CARD_RANKS];
 	}
 
-	protected static CardRank getCardRank(int card_id) {
-		return all_ranks[card_id % CARD_RANKS];
+	private static CardRank getCardRank(int cardId) {
+		return ALL_RANKS[cardId % CARD_RANKS];
 	}
 
 	/**
-	 * Returns the <code>Card</code> object having the given suit and rank.
+	 * Returns the {@link Card} object having the given suit and rank.
 	 * 
-	 * @param _card_rank
-	 * the rank of the card to retrieve
-	 * @param _card_suit
-	 * the suit of the card to retrieve
-	 * @return the <code>Card</code> object having the given rank and suit
+	 * @param cardRank the rank of the card to retrieve
+	 * @param cardSuit the suit of the card to retrieve
+	 * @return the {@link Card} object having the given rank and suit
 	 */
-	public static Card getCard(Rank _card_rank, Suit _card_suit) {
-		if ((_card_rank == null) || (_card_suit == null)) {
+	public static Card getCard(Rank cardRank, Suit cardSuit) {
+		if ((cardRank == null) || (cardSuit == null)) {
 			throw new NullPointerException("Specified rank or suit is null");
 		}
 
-		int card_id = _card_rank.ordinal() + CARD_SUITS * _card_suit.ordinal();
-		if (all_cards == null) {
-			all_cards = new Card[CARDS_PER_DECK];
+		int cardId = cardRank.ordinal() + CARD_SUITS * cardSuit.ordinal();
+		if (ALL_CARDS == null) {
+			ALL_CARDS = new Card[CARDS_PER_DECK];
 		}
-		if (all_cards[card_id] == null) {
-			all_cards[card_id] = new Card(getCardRank(card_id), _card_suit,
-					card_id);
+		if (ALL_CARDS[cardId] == null) {
+			ALL_CARDS[cardId] = new Card(getCardRank(cardId), cardSuit, cardId);
 		}
-		return all_cards[card_id];
+		return ALL_CARDS[cardId];
 	}
 
 	/**
-	 * Returns the <code>Card</code> having the given unique numerical
-	 * identifier.
+	 * Returns the {@link Card} having the given unique numerical identifier.
 	 * 
-	 * @param card_id
-	 * the numerical identifier of the card
-	 * @return the card having the given numerical identifier
+	 * @param card_id the numerical identifier of the card
+	 * @return the {@link Card} object having the given numerical identifier
 	 */
 	public static Card getCard(int card_id) {
 		if ((card_id < 0) || (card_id >= CARDS_PER_DECK)) {
-			throw new IllegalArgumentException(
-					"Card identifier is not in range");
+			throw new IllegalArgumentException("Card identifier is not in range");
 		}
 
-		if (all_cards == null) {
-			all_cards = new Card[CARDS_PER_DECK];
+		if (ALL_CARDS == null) {
+			ALL_CARDS = new Card[CARDS_PER_DECK];
 		}
-		if (all_cards[card_id] == null) {
-			all_cards[card_id] = new Card(getCardRank(card_id),
-					getCardSuit(card_id), card_id);
+		if (ALL_CARDS[card_id] == null) {
+			ALL_CARDS[card_id] = new Card(getCardRank(card_id), getCardSuit(card_id),
+			    card_id);
 		}
-		return all_cards[card_id];
+		return ALL_CARDS[card_id];
 	}
 
-	protected static Card[] all_cards;
+	private static Card[] ALL_CARDS;
 
-	protected final CardRank card_rank;
-	protected final Suit suit_enum;
-	protected final int card_id;
+	private final CardRank cardRank;
+	private final Suit suit;
+	private final int cardId;
 
-	protected Card(CardRank _card_rank, Suit _card_suit, int _card_id) {
-		card_rank = _card_rank;
-		suit_enum = _card_suit;
-		card_id = _card_id;
+	private Card(CardRank cardRank, Suit suit, int cardId) {
+		this.cardRank = cardRank;
+		this.suit = suit;
+		this.cardId = cardId;
 	}
 
 	/**
@@ -162,7 +149,7 @@ public class Card {
 	 * @return the card rank
 	 */
 	public final Rank getRank() {
-		return card_rank.rank_enum;
+		return cardRank.rank;
 	}
 
 	/**
@@ -171,27 +158,26 @@ public class Card {
 	 * @return the card suit
 	 */
 	public final Suit getSuit() {
-		return suit_enum;
+		return suit;
 	}
 
 	/**
 	 * Returns the value of the card. If the rank of the card is an ace, this
-	 * method returns <code>1</code>.
+	 * method returns {@code 1}.
 	 * 
 	 * @return the value of the card
 	 */
 	public int getValue() {
-		return card_rank.value;
+		return cardRank.value;
 	}
 
 	/**
 	 * Returns whether this card is an ace.
 	 * 
-	 * @return <code>true</code> if this card is an ace, <code>false</code>
-	 * otherwise
+	 * @return {@code true} if this card is an ace, {@code false} otherwise
 	 */
 	public boolean isAce() {
-		return (card_rank.rank_enum == Rank.ACE);
+		return (cardRank.rank == Rank.ACE);
 	}
 
 	/**
@@ -200,12 +186,12 @@ public class Card {
 	 * @return the identifying card number
 	 */
 	public int getID() {
-		return card_id;
+		return cardId;
 	}
 
 	public String toString() {
-		StringBuffer sbuf = new StringBuffer(128);
-		sbuf.append(card_rank).append(" of ").append(suit_enum);
+		StringBuilder sbuf = new StringBuilder(128);
+		sbuf.append(cardRank).append(" of ").append(suit);
 		return sbuf.toString();
 	}
 }

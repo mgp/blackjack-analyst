@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -46,11 +46,10 @@ public interface DealerStrategy {
 
 	/**
 	 * Returns the proper action, given the current hand. If this method returns
-	 * <code>null</code>, the caller determines what action is taken.
+	 * {@code null}, the caller determines what action is taken.
 	 * 
-	 * @param dealer_hand
-	 * the current hand of cards
+	 * @param hand the current hand of cards
 	 * @return the proper action, which is either hit or stand
 	 */
-	public DealerStrategyAction getAction(Hand dealer_hand);
+	public DealerStrategyAction getAction(Hand hand);
 }

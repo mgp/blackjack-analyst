@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -22,11 +22,8 @@ package blackjackanalyst.observer;
 
 import java.util.List;
 
-import blackjackanalyst.Card;
-import blackjackanalyst.Hand;
 import blackjackanalyst.Player;
 import blackjackanalyst.PlayerHand;
-import blackjackanalyst.TableObserver;
 
 /**
  * A table observer that records the number of wins and losses players have had
@@ -34,17 +31,17 @@ import blackjackanalyst.TableObserver;
  * 
  * @author Michael Parker
  */
-public class WinLossTableObserver implements TableObserver {
-	protected int rounds_played;
+public class WinLossTableObserver extends AbstractTableObserver {
+	protected int roundsPlayed;
 
-	protected int num_wins;
-	protected int num_losses;
-	protected int num_blackjacks;
-	protected int num_pushes;
-	protected int num_insurance_wins;
-	protected int num_insurance_losses;
+	protected int numWins;
+	protected int numLosses;
+	protected int numBlackjacks;
+	protected int numPushes;
+	protected int numInsuranceWins;
+	protected int numInsuranceLosses;
 
-	protected int net_gain;
+	protected int netGain;
 
 	/**
 	 * Creates a new table observer that gathers statistics.
@@ -57,108 +54,59 @@ public class WinLossTableObserver implements TableObserver {
 	 * Resets all statistics recorded by this observer.
 	 */
 	public void reset() {
-		rounds_played = 0;
-		
-		num_wins = 0;
-		num_losses = 0;
-		num_blackjacks = 0;
-		num_pushes = 0;
-		num_insurance_wins = 0;
-		num_insurance_losses = 0;
+		roundsPlayed = 0;
 
-		net_gain = 0;
+		numWins = 0;
+		numLosses = 0;
+		numBlackjacks = 0;
+		numPushes = 0;
+		numInsuranceWins = 0;
+		numInsuranceLosses = 0;
+
+		netGain = 0;
 	}
 
 	public void newRound(List<Player> players) {
-		++rounds_played;
+		++roundsPlayed;
 	}
 
-	public void shoeShuffled() {
+	public void playerBusts(Player player, PlayerHand player_hand,
+	    int amountLost, int newBankroll) {
+		++numLosses;
+		netGain -= amountLost;
 	}
 
-	public void dealerDealt(Card up_card) {
+	public void playerWins(Player player, PlayerHand hand, int amountWon,
+	    int newBankroll) {
+		++numWins;
+		netGain += amountWon;
 	}
 
-	public void dealerDealt(Card down_card, Hand dealer_hand) {
+	public void playerLoses(Player player, PlayerHand hand, int amountLost,
+	    int newBankroll) {
+		++numLosses;
+		netGain -= amountLost;
 	}
 
-	public void dealerBlackjack(Hand dealer_hand) {
+	public void playerBlackjack(Player player, PlayerHand hand, int amountWon,
+	    int newBankroll) {
+		++numBlackjacks;
+		netGain += amountWon;
 	}
 
-	public void dealerDraws(Card dealt_card, Hand new_hand) {
+	public void playerPush(Player player, PlayerHand hand, int bankroll) {
+		++numPushes;
 	}
 
-	public void dealerStands(Hand dealer_hand) {
+	public void playerWinsInsurance(Player player, int amountWon, int newBankroll) {
+		++numInsuranceWins;
+		netGain += amountWon;
 	}
 
-	public void dealerBusts(Hand dealer_hand) {
-	}
-
-	public void playerJoins(Player joined_player) {
-	}
-
-	public void playerLeaves(Player left_player) {
-	}
-
-	public void playerBets(Player betting_player, int bet_amount, int bankroll) {
-	}
-	
-	public void playerInsures(Player betting_player, int bet_amount, int bankroll) {
-	}
-
-	public void playerDealt(Player dealt_player, PlayerHand player_hand) {
-	}
-
-	public void playerDraws(Player dealt_player, Card dealt_card,
-			PlayerHand new_hand) {
-	}
-
-	public void playerStands(Player dealt_player, PlayerHand player_hand) {
-	}
-
-	public void playerBusts(Player dealt_player, PlayerHand player_hand,
-			int amount_lost, int new_bankroll) {
-		++num_losses;
-		net_gain -= amount_lost;
-	}
-
-	public void playerSplits(Player dealt_player, PlayerHand player_hand) {
-	}
-
-	public void playerDoublesDown(Player dealt_player, Card dealt_card,
-			PlayerHand new_hand) {
-	}
-
-	public void playerWins(Player dealt_player, PlayerHand player_hand, int amount_won, 
-			int new_bankroll) {
-		++num_wins;
-		net_gain += amount_won;
-	}
-
-	public void playerLoses(Player dealt_player, PlayerHand player_hand, int amount_lost,
-			int new_bankroll) {
-		++num_losses;
-		net_gain -= amount_lost;
-	}
-
-	public void playerBlackjack(Player dealt_player, PlayerHand player_hand, int amount_won,
-			int new_bankroll) {
-		++num_blackjacks;
-		net_gain += amount_won;
-	}
-
-	public void playerPush(Player dealt_player, PlayerHand player_hand, int held_bankroll) {
-		++num_pushes;
-	}
-	
-	public void playerWinsInsurance(Player dealt_player, int amount_won, int new_bankroll) {
-		++num_insurance_wins;
-		net_gain += amount_won;
-	}
-	
-	public void playerLosesInsurance(Player dealt_player, int amount_lost, int new_bankroll) {
-		++num_insurance_losses;
-		net_gain -= amount_lost;
+	public void playerLosesInsurance(Player player, int amountLost,
+	    int newBankroll) {
+		++numInsuranceLosses;
+		netGain -= amountLost;
 	}
 
 	/**
@@ -167,7 +115,7 @@ public class WinLossTableObserver implements TableObserver {
 	 * @return the number of player wins
 	 */
 	public int getNumWins() {
-		return num_wins;
+		return numWins;
 	}
 
 	/**
@@ -176,7 +124,7 @@ public class WinLossTableObserver implements TableObserver {
 	 * @return the number of player losses
 	 */
 	public int getNumLosses() {
-		return num_losses;
+		return numLosses;
 	}
 
 	/**
@@ -185,7 +133,7 @@ public class WinLossTableObserver implements TableObserver {
 	 * @return the number of player blackjacks
 	 */
 	public int getNumBlackjacks() {
-		return num_blackjacks;
+		return numBlackjacks;
 	}
 
 	/**
@@ -194,7 +142,7 @@ public class WinLossTableObserver implements TableObserver {
 	 * @return the number of player pushes.
 	 */
 	public int getNumPushes() {
-		return num_pushes;
+		return numPushes;
 	}
 
 	/**
@@ -203,7 +151,7 @@ public class WinLossTableObserver implements TableObserver {
 	 * @return the number of blackjack rounds
 	 */
 	public int getNumRounds() {
-		return rounds_played;
+		return roundsPlayed;
 	}
 
 	/**
@@ -213,18 +161,18 @@ public class WinLossTableObserver implements TableObserver {
 	 * @return the net winnings of the players
 	 */
 	public int getNetGain() {
-		return net_gain;
+		return netGain;
 	}
 
 	public String toString() {
-		StringBuffer sbuf = new StringBuffer(512);
-		sbuf.append("W: ").append(num_wins);
-		sbuf.append(", L: ").append(num_losses);
-		sbuf.append(", BJ: ").append(num_blackjacks);
-		sbuf.append(", P: ").append(num_pushes);
-		sbuf.append(", IW: ").append(num_insurance_wins);
-		sbuf.append(", IL: ").append(num_insurance_losses);
-		sbuf.append(", net = ").append(net_gain);
+		StringBuilder sbuf = new StringBuilder(512);
+		sbuf.append("W=").append(numWins);
+		sbuf.append(", L=").append(numLosses);
+		sbuf.append(", BJ=").append(numBlackjacks);
+		sbuf.append(", P=").append(numPushes);
+		sbuf.append(", IW=").append(numInsuranceWins);
+		sbuf.append(", IL=").append(numInsuranceLosses);
+		sbuf.append(", net=").append(netGain);
 		return sbuf.toString();
 	}
 }

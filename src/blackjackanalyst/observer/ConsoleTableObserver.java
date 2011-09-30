@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -29,8 +29,8 @@ import blackjackanalyst.PlayerHand;
 import blackjackanalyst.TableObserver;
 
 /**
- * An implementation of interface <code>TableObserver</code> that writes to
- * the console.
+ * An implementation of interface {@link TableObserver} that writes to the
+ * console.
  * 
  * @author Michael Parker
  */
@@ -49,7 +49,7 @@ public class ConsoleTableObserver implements TableObserver {
 
 	public void newRound(List<Player> players) {
 		System.out.println("\nNew round started with " + players.size()
-				+ " players");
+		    + " players");
 	}
 
 	public void shoeShuffled() {
@@ -62,7 +62,7 @@ public class ConsoleTableObserver implements TableObserver {
 
 	public void dealerDealt(Card down_card, Hand dealer_hand) {
 		System.out.println("The dealer reveals its down card, has hand "
-				+ dealer_hand);
+		    + dealer_hand);
 	}
 
 	public void dealerBlackjack(Hand dealer_hand) {
@@ -76,7 +76,7 @@ public class ConsoleTableObserver implements TableObserver {
 	public void dealerStands(Hand dealer_hand) {
 		System.out.println("The dealer stands with hand " + dealer_hand);
 	}
-	
+
 	public void dealerBusts(Hand dealer_hand) {
 		System.out.println("The dealer busts with hand " + dealer_hand);
 	}
@@ -92,12 +92,11 @@ public class ConsoleTableObserver implements TableObserver {
 	public void playerBets(Player betting_player, int bet_amount, int bankroll) {
 		System.out.println(betting_player.getName() + " bets " + bet_amount);
 	}
-	
+
 	public void playerInsures(Player betting_player, int bet_amount, int bankroll) {
 		if (bet_amount > 0) {
 			System.out.println(betting_player.getName() + " insures " + bet_amount);
-		}
-		else {
+		} else {
 			System.out.println(betting_player.getName() + " declines insurance");
 		}
 	}
@@ -106,58 +105,67 @@ public class ConsoleTableObserver implements TableObserver {
 		System.out.println(dealt_player.getName() + " is dealt " + player_hand);
 	}
 
-	public void playerDraws(Player dealt_player, Card dealt_card, PlayerHand new_hand) {
-		System.out.println(dealt_player.getName() + " hits, now has hand " + new_hand);
+	public void playerDraws(Player dealt_player, Card dealt_card,
+	    PlayerHand new_hand) {
+		System.out.println(dealt_player.getName() + " hits, now has hand "
+		    + new_hand);
 	}
 
 	public void playerStands(Player dealt_player, PlayerHand player_hand) {
-		System.out.println(dealt_player.getName() + " stands with hand " + player_hand);
+		System.out.println(dealt_player.getName() + " stands with hand "
+		    + player_hand);
 	}
-	
-	public void playerBusts(Player dealt_player, PlayerHand player_hand, 
-			int amount_lost, int new_bankroll) {
-		System.out.println(dealt_player.getName() + " busts with hand " + player_hand 
-				+ ", lost " + amount_lost);
+
+	public void playerBusts(Player dealt_player, PlayerHand player_hand,
+	    int amount_lost, int new_bankroll) {
+		System.out.println(dealt_player.getName() + " busts with hand "
+		    + player_hand + ", lost " + amount_lost);
 	}
 
 	public void playerSplits(Player dealt_player, PlayerHand player_hand) {
-		System.out.println(dealt_player.getName() + " splits with hand " + player_hand);
+		System.out.println(dealt_player.getName() + " splits with hand "
+		    + player_hand);
 	}
 
 	public void playerDoublesDown(Player dealt_player, Card dealt_card,
-			PlayerHand new_hand) {
+	    PlayerHand new_hand) {
 		System.out.println(dealt_player.getName() + " doubles down, now has hand "
-				+ new_hand);
+		    + new_hand);
 	}
 
-	public void playerWins(Player dealt_player, PlayerHand player_hand, 
-			int amount_won, int new_bankroll) {
-		System.out.println(dealt_player.getName() + " beat dealer with " + 
-				player_hand.getHighValidValue() + ", won " + amount_won);
+	public void playerWins(Player dealt_player, PlayerHand player_hand,
+	    int amount_won, int new_bankroll) {
+		System.out.println(dealt_player.getName() + " beat dealer with "
+		    + player_hand.getHighValidValue() + ", won " + amount_won);
 	}
 
-	public void playerLoses(Player dealt_player, PlayerHand player_hand, 
-			int amount_lost, int new_bankroll) {
-		System.out.println(dealt_player.getName() + " lost to dealer with " + 
-				player_hand.getHighValidValue() + ", lost " + amount_lost);
+	public void playerLoses(Player dealt_player, PlayerHand player_hand,
+	    int amount_lost, int new_bankroll) {
+		System.out.println(dealt_player.getName() + " lost to dealer with "
+		    + player_hand.getHighValidValue() + ", lost " + amount_lost);
 	}
 
-	public void playerBlackjack(Player dealt_player, PlayerHand player_hand, 
-			int amount_won, int new_bankroll) {
+	public void playerBlackjack(Player dealt_player, PlayerHand player_hand,
+	    int amount_won, int new_bankroll) {
 		System.out.println(dealt_player.getName() + " received blackjack, won "
-				+ amount_won);
+		    + amount_won);
 	}
 
-	public void playerPush(Player dealt_player, PlayerHand player_hand, int held_bankroll) {
-		System.out.println(dealt_player.getName() + " pushed with dealer on " + 
-				player_hand.getHighValidValue());
-	}
-	
-	public void playerWinsInsurance(Player dealt_player, int amount_won, int new_bankroll) {
-		System.out.println(dealt_player.getName() + " won " + amount_won + " on insurance");
+	public void playerPush(Player dealt_player, PlayerHand player_hand,
+	    int held_bankroll) {
+		System.out.println(dealt_player.getName() + " pushed with dealer on "
+		    + player_hand.getHighValidValue());
 	}
 
-	public void playerLosesInsurance(Player dealt_player, int amount_lost, int new_bankroll) {
-		System.out.println(dealt_player.getName() + " lost " + amount_lost + " on insurance");
+	public void playerWinsInsurance(Player dealt_player, int amount_won,
+	    int new_bankroll) {
+		System.out.println(dealt_player.getName() + " won " + amount_won
+		    + " on insurance");
+	}
+
+	public void playerLosesInsurance(Player dealt_player, int amount_lost,
+	    int new_bankroll) {
+		System.out.println(dealt_player.getName() + " lost " + amount_lost
+		    + " on insurance");
 	}
 }

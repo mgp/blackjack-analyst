@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -30,9 +30,9 @@ import blackjackanalyst.TableObserver;
 
 /**
  * An abstract class that defines an empty body for each method of interface
- * <code>TableObserver</code>. Concrete implementations that are only
- * interested in select methods of the interface can extend this class for
- * clarity and convenience.
+ * {@link TableObserver}. Concrete implementations that are only interested in
+ * select methods of the interface can extend this class for clarity and
+ * convenience.
  * 
  * @author Michael Parker
  */
@@ -45,97 +45,96 @@ public abstract class AbstractTableObserver implements TableObserver {
 		// A concrete subclass can override this method.
 	}
 
-	public void dealerDealt(Card up_card) {
+	public void dealerDealt(Card upCard) {
 		// A concrete subclass can override this method.
 	}
 
-	public void dealerDealt(Card down_card, Hand dealer_hand) {
+	public void dealerDealt(Card downCard, Hand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void dealerBlackjack(Hand dealer_hand) {
+	public void dealerBlackjack(Hand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void dealerDraws(Card dealt_card, Hand new_hand) {
+	public void dealerDraws(Card card, Hand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void dealerStands(Hand dealer_hand) {
+	public void dealerStands(Hand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void dealerBusts(Hand dealer_hand) {
+	public void dealerBusts(Hand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerJoins(Player joined_player) {
+	public void playerJoins(Player player) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerLeaves(Player left_player) {
+	public void playerLeaves(Player player) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerBets(Player betting_player, int bet_amount, int bankroll) {
-		// A concrete subclass can override this method.
-	}
-	
-	public void playerInsures(Player betting_player, int bet_amount, int new_bankroll) {
+	public void playerBets(Player betting_player, int betAmount, int bankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerDealt(Player dealt_player, PlayerHand player_hand) {
+	public void playerInsures(Player betting_player, int betAmount, int bankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerDraws(Player dealt_player, Card dealt_card,
-			PlayerHand new_hand) {
+	public void playerDealt(Player player, PlayerHand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerStands(Player dealt_player, PlayerHand player_hand) {
+	public void playerDraws(Player player, Card card, PlayerHand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerBusts(Player dealt_player, PlayerHand player_hand,
-			int amount_lost, int new_bankroll) {
+	public void playerStands(Player player, PlayerHand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerSplits(Player dealt_player, PlayerHand player_hand) {
+	public void playerBusts(Player player, PlayerHand hand, int amountLost,
+	    int newBankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerDoublesDown(Player dealt_player, Card dealt_card,
-			PlayerHand new_hand) {
+	public void playerSplits(Player player, PlayerHand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerWins(Player dealt_player, PlayerHand player_hand, 
-			int amount_won, int new_bankroll) {
+	public void playerDoublesDown(Player player, Card card, PlayerHand hand) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerLoses(Player dealt_player, PlayerHand player_hand, 
-			int amount_lost, int new_bankroll) {
+	public void playerWins(Player player, PlayerHand hand, int amountWon,
+	    int newBankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerBlackjack(Player dealt_player, PlayerHand player_hand, 
-			int amount_won, int new_bankroll) {
+	public void playerLoses(Player player, PlayerHand hand, int amountLost,
+	    int newBankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerPush(Player dealt_player, PlayerHand player_hand, int held_bankroll) {
+	public void playerBlackjack(Player player, PlayerHand hand, int amountWon,
+	    int newBankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerWinsInsurance(Player dealt_player, int amount_won, int new_bankroll) {
+	public void playerPush(Player player, PlayerHand hand, int bankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerLosesInsurance(Player dealt_player, int amount_lost, int new_bankroll) {
+	public void playerWinsInsurance(Player player, int amountWon, int newBankroll) {
+		// A concrete subclass can override this method.
+	}
+
+	public void playerLosesInsurance(Player player, int amountLost,
+	    int newBankroll) {
 		// A concrete subclass can override this method.
 	}
 }

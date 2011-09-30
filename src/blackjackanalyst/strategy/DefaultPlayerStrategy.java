@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -26,23 +26,23 @@ import blackjackanalyst.PlayerStrategy;
 import blackjackanalyst.Table;
 
 /**
- * The default player strategy which immitates the dealer by hitting on any
- * value below 16 or soft 17. On any other value, the player stands.
+ * The default player strategy which imitates the dealer by hitting on any value
+ * below 16 or soft 17. On any other value, the player stands.
  * 
  * @author Michael Parker
  */
-public class DefaultPlayer implements PlayerStrategy {
-	protected Table joined_table;
-	protected int bet_amount;
+public class DefaultPlayerStrategy implements PlayerStrategy {
+	protected Table joinedTable;
+	protected int betAmount;
 
-	public DefaultPlayer() {
-		joined_table = null;
-		bet_amount = 0;
+	public DefaultPlayerStrategy() {
+		joinedTable = null;
+		betAmount = 0;
 	}
 
 	public PlayerStrategyAction getAction(PlayerHand curr_hand, Card dealer_card) {
-		int best_value = curr_hand.getHighValidValue();
-		if ((best_value > 17) || ((best_value == 17) && !curr_hand.isSoft())) {
+		int bestValue = curr_hand.getHighValidValue();
+		if ((bestValue > 17) || ((bestValue == 17) && !curr_hand.isSoft())) {
 			return PlayerStrategyAction.STAND;
 		}
 		return PlayerStrategyAction.HIT;
@@ -54,27 +54,27 @@ public class DefaultPlayer implements PlayerStrategy {
 	public void cardDealt(Card dealt_card) {
 	}
 
-	public void joinedTable(Table t) {
-		if (joined_table != null) {
+	public void joinedTable(Table table) {
+		if (joinedTable != null) {
 			return;
 		}
-		joined_table = t;
-		bet_amount = t.getMinimumBet();
+		joinedTable = table;
+		betAmount = table.getMinimumBet();
 	}
 
-	public void leftTable(Table t) {
-		if (t != joined_table) {
+	public void leftTable(Table table) {
+		if (table != joinedTable) {
 			return;
 		}
-		joined_table = null;
-		bet_amount = 0;
+		joinedTable = null;
+		betAmount = 0;
 	}
 
 	public int getBet(int bankroll) {
-		return bet_amount;
+		return betAmount;
 	}
-	
-	public int getInsuranceBet(PlayerHand curr_hand, int bet_amount) {
+
+	public int getInsuranceBet(PlayerHand hand, int betAmount) {
 		return 0;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright Michael Parker (michael.g.parker@gmail.com).
+ * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -20,10 +20,7 @@
 
 package blackjackanalyst.observer;
 
-import blackjackanalyst.Card;
 import blackjackanalyst.PlayerHand;
-import blackjackanalyst.PlayerObserver;
-import blackjackanalyst.Table;
 
 /**
  * A player observer that records the number of wins and losses a player has
@@ -31,21 +28,21 @@ import blackjackanalyst.Table;
  * 
  * @author Michael Parker
  */
-public class WinLossPlayerObserver implements PlayerObserver {
-	protected int curr_streak;
-	protected boolean winning_streak;
+public class WinLossPlayerObserver extends AbstractPlayerObserver {
+	protected int streakLength;
+	protected boolean onWinningStreak;
 
-	protected int num_wins;
-	protected int num_losses;
-	protected int num_blackjacks;
-	protected int num_pushes;
-	protected int num_insurance_wins;
-	protected int num_insurance_losses;
+	protected int numWins;
+	protected int numLosses;
+	protected int numBlackjacks;
+	protected int numPushes;
+	protected int numInsuranceWins;
+	protected int numInsuranceLosses;
 
-	protected int win_streak;
-	protected int loss_streak;
-	
-	protected int net_gain;
+	protected int longestWinStreak;
+	protected int longestLosingStreak;
+
+	protected int netGain;
 
 	/**
 	 * Creates a new player observer that gathers statistics.
@@ -58,106 +55,79 @@ public class WinLossPlayerObserver implements PlayerObserver {
 	 * Resets the statistics recorded by this observer.
 	 */
 	public void reset() {
-		curr_streak = 0;
-		winning_streak = false;
+		streakLength = 0;
+		onWinningStreak = false;
 
-		num_wins = 0;
-		num_losses = 0;
-		num_blackjacks = 0;
-		num_pushes = 0;
+		numWins = 0;
+		numLosses = 0;
+		numBlackjacks = 0;
+		numPushes = 0;
 
-		win_streak = 0;
-		loss_streak = 0;
-		
-		net_gain = 0;
+		longestWinStreak = 0;
+		longestLosingStreak = 0;
+
+		netGain = 0;
 	}
 
-	public void playerJoins(Table t) {
-	}
-
-	public void playerLeaves(Table t) {
-	}
-
-	public void playerBets(int bet_amount, int bankroll) {
-	}
-	
-	public void playerInsures(int bet_amount, int bankroll) {
-	}
-
-	public void playerDealt(PlayerHand player_hand) {
-	}
-
-	public void playerDraws(Card dealt_card, PlayerHand new_hand) {
-	}
-
-	public void playerStands(PlayerHand player_hand) {
-	}
-
-	public void playerBusts(PlayerHand player_hand, int amount_lost, int new_bankroll) {
-		++num_losses;
-		net_gain -= amount_lost;
+	public void playerBusts(PlayerHand hand, int amountLost, int newBankroll) {
+		++numLosses;
+		netGain -= amountLost;
 		updateLossStreak();
 	}
 
-	public void playerSplits(PlayerHand player_hand) {
-	}
-
-	public void playerDoublesDown(Card dealt_card, PlayerHand new_hand) {
-	}
-
-	public void playerWins(PlayerHand player_hand, int amount_won, int new_bankroll) {
-		++num_wins;
-		net_gain += amount_won;
+	public void playerWins(PlayerHand hand, int amountWon, int newBankroll) {
+		++numWins;
+		netGain += amountWon;
 		updateWinStreak();
 	}
 
-	public void playerLoses(PlayerHand player_hand, int amount_lost, int new_bankroll) {
-		++num_losses;
-		net_gain -= amount_lost;
+	public void playerLoses(PlayerHand hand, int amountLost, int newBankroll) {
+		++numLosses;
+		netGain -= amountLost;
 		updateLossStreak();
 	}
 
-	public void playerBlackjack(PlayerHand player_hand, int amount_won, int new_bankroll) {
-		++num_blackjacks;
-		net_gain += amount_won;
+	public void playerBlackjack(PlayerHand hand, int amountWon, int newBankroll) {
+		++numBlackjacks;
+		netGain += amountWon;
 		updateWinStreak();
 	}
 
-	public void playerPush(PlayerHand player_hand, int held_bankroll) {
-		++num_pushes;
+	public void playerPush(PlayerHand hand, int heldBankroll) {
+		++numPushes;
 		// push erases any streak
-		curr_streak = 0;
+		streakLength = 0;
 	}
-	
-	public void playerWinsInsurance(int amount_won, int new_bankroll) {
-		++num_insurance_wins;
-		net_gain += amount_won;
+
+	public void playerWinsInsurance(int amountWon, int newBankroll) {
+		++numInsuranceWins;
+		netGain += amountWon;
 	}
-	
-	public void playerLosesInsurance(int amount_lost, int new_bankroll) {
-		++num_insurance_losses;
-		net_gain -= amount_lost;
+
+	public void playerLosesInsurance(int amountLost, int newBankroll) {
+		++numInsuranceLosses;
+		netGain -= amountLost;
 	}
 
 	protected void updateWinStreak() {
-		if (!winning_streak) {
+		if (!onWinningStreak) {
 			// erase losing streak, start winning streak
-			curr_streak = 0;
-			winning_streak = true;
+			streakLength = 0;
+			onWinningStreak = true;
 		}
-		if (++curr_streak > win_streak) {
-			win_streak = curr_streak;
+		if (++streakLength > longestWinStreak) {
+			longestWinStreak = streakLength;
 		}
 	}
 
 	protected void updateLossStreak() {
-		if (winning_streak) {
+		if (onWinningStreak) {
 			// erase winning streak, start losing streak
-			curr_streak = 0;
-			winning_streak = false;
+			streakLength = 0;
+			onWinningStreak = false;
 		}
-		if (++curr_streak > loss_streak) {
-			loss_streak = curr_streak;
+		if (++streakLength > longestLosingStreak) {
+			longestLosingStreak = streakLength;
 		}
 	}
 
@@ -167,7 +137,7 @@ public class WinLossPlayerObserver implements PlayerObserver {
 	 * @return the number of player wins
 	 */
 	public int getNumWins() {
-		return num_wins;
+		return numWins;
 	}
 
 	/**
@@ -176,7 +146,7 @@ public class WinLossPlayerObserver implements PlayerObserver {
 	 * @return the number of player losses
 	 */
 	public int getNumLosses() {
-		return num_losses;
+		return numLosses;
 	}
 
 	/**
@@ -185,39 +155,38 @@ public class WinLossPlayerObserver implements PlayerObserver {
 	 * @return the number of player blackjacks
 	 */
 	public int getNumBlackjacks() {
-		return num_blackjacks;
+		return numBlackjacks;
 	}
 
 	/**
 	 * Returns the number of times the player pushed.
 	 * 
-	 * @return the number of player pushes.
+	 * @return the number of player pushes
 	 */
 	public int getNumPushes() {
-		return num_pushes;
+		return numPushes;
 	}
 
 	/**
 	 * Returns the longest win streak for this player, which may include
-	 * blackjacks. A winning streak is broken any time the player pushes or
-	 * loses.
+	 * blackjacks. A winning streak is broken any time the player pushes or loses.
 	 * 
 	 * @return the longest player win streak
 	 */
 	public int getWinStreak() {
-		return win_streak;
+		return longestWinStreak;
 	}
 
 	/**
-	 * Returns the longest loss streak for this player. A losing streak is
-	 * broken any time the player pushes or wins.
+	 * Returns the longest loss streak for this player. A losing streak is broken
+	 * any time the player pushes or wins.
 	 * 
 	 * @return the longest player loss streak
 	 */
 	public int getLossStreak() {
-		return loss_streak;
+		return longestLosingStreak;
 	}
-	
+
 	/**
 	 * Returns the combined net winnings of this player; a negative number
 	 * returned indicates a winning house.
@@ -225,18 +194,18 @@ public class WinLossPlayerObserver implements PlayerObserver {
 	 * @return the net winnings of this player
 	 */
 	public int getNetGain() {
-		return net_gain;
+		return netGain;
 	}
 
 	public String toString() {
-		StringBuffer sbuf = new StringBuffer(512);
-		sbuf.append("W: ").append(num_wins);
-		sbuf.append(", L: ").append(num_losses);
-		sbuf.append(", BJ: ").append(num_blackjacks);
-		sbuf.append(", P: ").append(num_pushes);
-		sbuf.append(", IW: ").append(num_insurance_wins);
-		sbuf.append(", IL: ").append(num_insurance_losses);
-		sbuf.append(", net = ").append(net_gain);
+		StringBuilder sbuf = new StringBuilder(512);
+		sbuf.append("W=").append(numWins);
+		sbuf.append(", L=").append(numLosses);
+		sbuf.append(", BJ=").append(numBlackjacks);
+		sbuf.append(", P=").append(numPushes);
+		sbuf.append(", IW=").append(numInsuranceWins);
+		sbuf.append(", IL=").append(numInsuranceLosses);
+		sbuf.append(", net=").append(netGain);
 		return sbuf.toString();
 	}
 }
