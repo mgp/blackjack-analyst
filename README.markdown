@@ -5,8 +5,8 @@ Blackjack Analyst allows evaluation of blackjack playing strategies through exte
 
 This code was previously hosted at http://www.sourceforge.net/projects/bjanalyst. (Unfortunate URL, I know.)
 
-Writing custom strategies
--------------------------
+Writing strategies
+------------------
 
 To write dealer (or house) strategies, implement the `DealerStrategy`
 interface. To write player strategies, implement the `PlayerStrategy`
@@ -30,10 +30,9 @@ hits on soft 17 or lower.
 Simulator options
 -----------------
 
-Mixing and matching strategies requires basic knowledge of Java. To get you
-started, the `Simulator` class has a `main` method that will create a table and
-simulate players all executing a specified strategy. It accepts the following
-command line arguments:
+To get you started, the `Simulator` class has a `main` method that will create
+a table and simulate players all executing a specified strategy. It accepts the
+following command line arguments:
 
 * `num_rounds`: The number of rounds of Blackjack to play.
 * `player_names`: A comma-separated list specifying the player names.
@@ -52,7 +51,7 @@ insurance, `IL` is the number of losses on insurance. (Note that basic strategy
 never takes insurance.) The number following `net` reflects the aggregate
 winnings of the players. The new individual bankrolls of each player follows.
 
-#### True count strategy
+### True count strategy
 
 Command line arguments:
 
@@ -66,7 +65,7 @@ Output:
     Player name=Mike: bankroll=105100, table=Table1
     Player name=Tim: bankroll=102040, table=Table1
 
-#### Basic strategy
+### Basic strategy
 
 Command line arguments:
 
@@ -80,7 +79,7 @@ Output:
     Player name=Mike: bankroll=91710, table=Table1
     Player name=Tim: bankroll=97490, table=Table1
 
-#### Default strategy
+### Default strategy
 
 Command line arguments:
 
@@ -94,7 +93,7 @@ Output:
     Player name=Mike: bankroll=41140, table=Table1
     Player name=Tim: bankroll=43700, table=Table1
 
-#### Verbose output
+### Verbose output
 
 Command line arguments, specifying only one round:
 
