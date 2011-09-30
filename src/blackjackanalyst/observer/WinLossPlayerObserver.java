@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -198,14 +198,14 @@ public class WinLossPlayerObserver extends AbstractPlayerObserver {
 	}
 
 	public String toString() {
-		StringBuilder sbuf = new StringBuilder(512);
-		sbuf.append("W=").append(numWins);
-		sbuf.append(", L=").append(numLosses);
-		sbuf.append(", BJ=").append(numBlackjacks);
-		sbuf.append(", P=").append(numPushes);
-		sbuf.append(", IW=").append(numInsuranceWins);
-		sbuf.append(", IL=").append(numInsuranceLosses);
-		sbuf.append(", net=").append(netGain);
-		return sbuf.toString();
+		StringBuilder sb = new StringBuilder(512);
+		sb.append("W=").append(numWins);
+		sb.append(", L=").append(numLosses);
+		sb.append(", BJ=").append(numBlackjacks);
+		sb.append(", P=").append(numPushes);
+		sb.append(", IW=").append(numInsuranceWins);
+		sb.append(", IL=").append(numInsuranceLosses);
+		sb.append(", net=").append(netGain);
+		return sb.toString();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -40,9 +40,9 @@ public class DefaultPlayerStrategy implements PlayerStrategy {
 		betAmount = 0;
 	}
 
-	public PlayerStrategyAction getAction(PlayerHand curr_hand, Card dealer_card) {
-		int bestValue = curr_hand.getHighValidValue();
-		if ((bestValue > 17) || ((bestValue == 17) && !curr_hand.isSoft())) {
+	public PlayerStrategyAction getAction(PlayerHand hand, Card dealerCard) {
+		int bestValue = hand.getHighValidValue();
+		if ((bestValue > 17) || ((bestValue == 17) && !hand.isSoft())) {
 			return PlayerStrategyAction.STAND;
 		}
 		return PlayerStrategyAction.HIT;
@@ -51,7 +51,7 @@ public class DefaultPlayerStrategy implements PlayerStrategy {
 	public void shoeShuffled() {
 	}
 
-	public void cardDealt(Card dealt_card) {
+	public void cardDealt(Card dealtCard) {
 	}
 
 	public void joinedTable(Table table) {

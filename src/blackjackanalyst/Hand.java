@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -189,25 +189,24 @@ public class Hand {
 		// update all possible hand values
 		highValidValue = -1;
 		TreeSet<Integer> newValues = new TreeSet<Integer>();
-		for (Iterator<Integer> i = handValues.iterator(); i.hasNext();) {
-			int currValue = i.next();
+		for (Integer handValue : handValues) {
 			int newValue;
 			if (card.isAce()) {
 				// update low value for ace
-				newValue = currValue + 1;
+				newValue = handValue + 1;
 				newValues.add(newValue);
 				if ((newValue <= 21) && (newValue > highValidValue)) {
 					highValidValue = newValue;
 				}
 				// update high value for ace
-				newValue = currValue + 11;
+				newValue = handValue + 11;
 				newValues.add(newValue);
 				if ((newValue <= 21) && (newValue > highValidValue)) {
 					highValidValue = newValue;
 				}
 			} else {
 				// not ace, update single value
-				newValue = currValue + card.getValue();
+				newValue = handValue + card.getValue();
 				newValues.add(newValue);
 				if ((newValue <= 21) && (newValue > highValidValue)) {
 					highValidValue = newValue;
@@ -221,23 +220,23 @@ public class Hand {
 	}
 
 	public String toString() {
-		StringBuilder sbuf = new StringBuilder(512);
+		StringBuilder sb = new StringBuilder(512);
 		for (Iterator<Card> i = cards.iterator(); i.hasNext();) {
-			Card next_card = i.next();
-			sbuf.append(next_card.toString());
+			Card nextCard = i.next();
+			sb.append(nextCard.toString());
 			if (i.hasNext()) {
-				sbuf.append(", ");
+				sb.append(", ");
 			}
 		}
-		sbuf.append(" (");
+		sb.append(" (");
 		if (isBlackjack()) {
-			sbuf.append("Blackjack");
+			sb.append("Blackjack");
 		} else if (isBusted()) {
-			sbuf.append(getLowValue());
+			sb.append(getLowValue());
 		} else {
-			sbuf.append(getHighValidValue());
+			sb.append(getHighValidValue());
 		}
-		sbuf.append(')');
-		return sbuf.toString();
+		sb.append(')');
+		return sb.toString();
 	}
 }

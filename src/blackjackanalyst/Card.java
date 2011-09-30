@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -113,22 +113,22 @@ public class Card {
 	/**
 	 * Returns the {@link Card} having the given unique numerical identifier.
 	 * 
-	 * @param card_id the numerical identifier of the card
+	 * @param cardId the numerical identifier of the card
 	 * @return the {@link Card} object having the given numerical identifier
 	 */
-	public static Card getCard(int card_id) {
-		if ((card_id < 0) || (card_id >= CARDS_PER_DECK)) {
+	public static Card getCard(int cardId) {
+		if ((cardId < 0) || (cardId >= CARDS_PER_DECK)) {
 			throw new IllegalArgumentException("Card identifier is not in range");
 		}
 
 		if (ALL_CARDS == null) {
 			ALL_CARDS = new Card[CARDS_PER_DECK];
 		}
-		if (ALL_CARDS[card_id] == null) {
-			ALL_CARDS[card_id] = new Card(getCardRank(card_id), getCardSuit(card_id),
-			    card_id);
+		if (ALL_CARDS[cardId] == null) {
+			ALL_CARDS[cardId] = new Card(getCardRank(cardId), getCardSuit(cardId),
+			    cardId);
 		}
-		return ALL_CARDS[card_id];
+		return ALL_CARDS[cardId];
 	}
 
 	private static Card[] ALL_CARDS;
@@ -190,8 +190,8 @@ public class Card {
 	}
 
 	public String toString() {
-		StringBuilder sbuf = new StringBuilder(128);
-		sbuf.append(cardRank).append(" of ").append(suit);
-		return sbuf.toString();
+		StringBuilder sb = new StringBuilder(128);
+		sb.append(cardRank).append(" of ").append(suit);
+		return sb.toString();
 	}
 }

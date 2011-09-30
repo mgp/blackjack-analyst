@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -77,11 +77,11 @@ public abstract class AbstractTableObserver implements TableObserver {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerBets(Player betting_player, int betAmount, int bankroll) {
+	public void playerBets(Player player, int betAmount, int bankroll) {
 		// A concrete subclass can override this method.
 	}
 
-	public void playerInsures(Player betting_player, int betAmount, int bankroll) {
+	public void playerInsures(Player player, int betAmount, int bankroll) {
 		// A concrete subclass can override this method.
 	}
 

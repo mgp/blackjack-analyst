@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -223,13 +223,13 @@ public class Player {
 	 * table name if any
 	 */
 	public String toString() {
-		StringBuilder sbuf = new StringBuilder();
-		sbuf.append("Player name=").append(getName());
-		sbuf.append(": bankroll=").append(bankroll);
+		StringBuilder sb = new StringBuilder();
+		sb.append("Player name=").append(getName());
+		sb.append(", bankroll=").append(bankroll);
 		if (table != null) {
-			sbuf.append(", table=").append(table.getName());
+			sb.append(", table=").append(table.getName());
 		}
-		return sbuf.toString();
+		return sb.toString();
 	}
 
 	/**

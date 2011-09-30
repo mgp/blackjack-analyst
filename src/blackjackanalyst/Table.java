@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -22,7 +22,6 @@ package blackjackanalyst;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class Table {
 	    int maxBet) {
 		verifyConstructorParams(maxPlayers, dealerStrategy, minBet, maxBet);
 
-		name = "Table " + tableNum;
+		this.name = "Table " + tableNum;
 		++tableNum;
 		this.maxPlayers = maxPlayers;
 		this.minBet = minBet;
@@ -84,20 +83,20 @@ public class Table {
 	 * Creates a new table with the given name, maximum number of players, dealer
 	 * strategy, and minimum bet and maximum bet.
 	 * 
-	 * @param _name the name of the blackjack table
+	 * @param name the name of the blackjack table
 	 * @param maxPlayers the maximum number of blackjack players
 	 * @param dealerStrategy the strategy used by the dealer
 	 * @param minBet the minimum bet at this table
 	 * @param maxBet the maximum bet at this table
 	 */
-	public Table(String _name, int maxPlayers, DealerStrategy dealerStrategy,
+	public Table(String name, int maxPlayers, DealerStrategy dealerStrategy,
 	    int minBet, int maxBet) {
-		if (_name == null) {
+		if (name == null) {
 			throw new IllegalArgumentException("Table name must be provided");
 		}
 		verifyConstructorParams(maxPlayers, dealerStrategy, minBet, maxBet);
 
-		name = _name;
+		this.name = name;
 		++tableNum;
 		this.maxPlayers = maxPlayers;
 		this.minBet = minBet;
@@ -190,11 +189,11 @@ public class Table {
 
 	/**
 	 * Returns whether there is room for more players at the blackjack table. This
-	 * method returns <code>true</code> if and only if the current number of
-	 * blackjack players is less than the maximum number permitted.
+	 * method returns {@code true} if and only if the current number of blackjack
+	 * players is less than the maximum number permitted.
 	 * 
-	 * @return <code>true</code> if more players can be added to the table,
-	 *         <code>false</code> otherwise
+	 * @return {@code true} if more players can be added to the table,
+	 *         {@code false} otherwise
 	 */
 	public boolean hasRoom() {
 		return (getNumPlayers() < getMaxPlayers());
@@ -214,13 +213,13 @@ public class Table {
 
 	/**
 	 * Attempts to add the given player to the table. For this method to succeed
-	 * and return <code>true</code>, the table must have room for the player and
-	 * the player must not be at a table already. Otherwise, this method returns
-	 * <code>false</code>.
+	 * and return {@code true}, the table must have room for the player and the
+	 * player must not be at a table already. Otherwise, this method returns
+	 * {@code false}.
 	 * 
 	 * @param player the player to add to the table
-	 * @return <code>true</code> if the player is added to the table,
-	 *         <code>false</code> otherwise
+	 * @return {@code true} if the player is added to the table, {@code false}
+	 *         otherwise
 	 */
 	public boolean addPlayer(Player player) {
 		if (hasRoom() && (player.table == null)) {
@@ -240,12 +239,12 @@ public class Table {
 
 	/**
 	 * Attempts to remove the given player from the table. For this method to
-	 * succeed and return <code>true</code>, the player must be at the table
+	 * succeed and return {@code true}, the player must be at the table
 	 * already.
 	 * 
 	 * @param player the player to remove from the table
-	 * @return <code>true</code> if the player is removed from the table,
-	 *         <code>false</code> otherwise
+	 * @return {@code true} if the player is removed from the table,
+	 *         {@code false} otherwise
 	 */
 	public boolean removePlayer(Player player) {
 		if (players.remove(player)) {
@@ -313,8 +312,7 @@ public class Table {
 	 * Get the bets of each player.
 	 */
 	protected void getBets() {
-		for (Iterator<Player> i = players.iterator(); i.hasNext();) {
-			Player player = i.next();
+		for (Player player : players) {
 			if (player.bankroll <= 0) {
 				// player has no money left, go onto next player
 				playerBets(player, 0, player.bankroll);
@@ -339,9 +337,8 @@ public class Table {
 	 * Deal two cards to each player.
 	 */
 	protected void dealPlayers() {
-		for (Iterator<Player> i = players.iterator(); i.hasNext();) {
+		for (Player player : players) {
 			// deal first card to player
-			Player player = i.next();
 			if (player.bets.isEmpty()) {
 				continue;
 			}
@@ -354,9 +351,8 @@ public class Table {
 			// notify strategies of dealt card
 			notifyDealt(dealtCard);
 		}
-		for (Iterator<Player> i = players.iterator(); i.hasNext();) {
+		for (Player player : players) {
 			// deal second card to player
-			Player player = i.next();
 			if (player.bets.isEmpty()) {
 				continue;
 			}
@@ -390,8 +386,7 @@ public class Table {
 
 		if (upCard.isAce()) {
 			// dealer showing ace, offer players insurance
-			for (Iterator<Player> i = players.iterator(); i.hasNext();) {
-				Player player = i.next();
+			for (Player player : players) {
 				if (player.bets.isEmpty()) {
 					// player did not place bet
 					continue;
@@ -422,8 +417,7 @@ public class Table {
 			// notify observers of blackjack on dealer
 			dealerBlackjack(dealerHand);
 
-			for (Iterator<Player> i = players.iterator(); i.hasNext();) {
-				Player player = i.next();
+			for (Player player : players) {
 				if (player.bets.isEmpty()) {
 					// player did not place bet
 					continue;
@@ -457,8 +451,7 @@ public class Table {
 			// do not continue drawing players and drawing house
 			return false;
 		} else {
-			for (Iterator<Player> i = players.iterator(); i.hasNext();) {
-				Player player = i.next();
+			for (Player player : players) {
 				if (player.bets.isEmpty()) {
 					// player did not place bet
 					continue;
@@ -494,14 +487,13 @@ public class Table {
 
 	protected void drawPlayers() {
 		// dealer up card is first card in hand
-		Card dealer_card = dealerHand.cards.get(0);
+		Card dealerCard = dealerHand.cards.get(0);
 
-		for (Iterator<Player> i = players.iterator(); i.hasNext();) {
-			Player player = i.next();
+		for (Player player : players) {
 			ArrayList<PlayerHand> playerBets = player.bets;
 
-			for (int bet_num = 0; bet_num < playerBets.size(); ++bet_num) {
-				PlayerHand currHand = playerBets.get(bet_num);
+			for (int betNum = 0; betNum < playerBets.size(); ++betNum) {
+				PlayerHand currHand = playerBets.get(betNum);
 				if (currHand.finished) {
 					// player already dealt winnings for blackjack
 					continue;
@@ -510,7 +502,7 @@ public class Table {
 				while (true) {
 					// get player action
 					PlayerStrategyAction action = player.strategy.getAction(currHand,
-					    dealer_card);
+					    dealerCard);
 
 					if (action == PlayerStrategyAction.STAND) {
 						// set hand as finished
@@ -554,15 +546,15 @@ public class Table {
 							} else if (currHand.cards.get(0).isAce()) {
 								if (currHand.isPair()) {
 									// allow resplitting of aces
-									action = player.strategy.getAction(currHand, dealer_card);
+									action = player.strategy.getAction(currHand, dealerCard);
 									if (action == PlayerStrategyAction.SPLIT) {
 										// notify observers that player splits
 										player.playerSplits(currHand);
 										playerSplits(player, currHand);
 
 										// make new bet with split card
-										PlayerHand new_hand = currHand.makeSplit();
-										playerBets.add(new_hand);
+										PlayerHand newHand = currHand.makeSplit();
+										playerBets.add(newHand);
 										continue;
 									}
 								}
@@ -666,16 +658,10 @@ public class Table {
 		}
 
 		// evaluate hands of each player, adjusting bankrolls
-		for (Iterator<Player> i = players.iterator(); i.hasNext();) {
-			// get next player
-			Player player = i.next();
-			for (Iterator<PlayerHand> j = player.bets.iterator(); j.hasNext();) {
-				// get next hand belonging to player
-				PlayerHand hand = j.next();
-
+		for (Player player : players) {
+			for (PlayerHand hand : player.bets) {
 				if (!hand.isBlackjack() && !hand.isBusted()) {
 					// player hand did not adjust bankroll earlier, get its best value
-
 					int highValue = hand.getHighValidValue();
 					if (dealerBusted || (dealerHighValue < highValue)) {
 						// dealer hand busted or player hand beat dealer hand, add to

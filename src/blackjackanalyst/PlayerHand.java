@@ -1,5 +1,5 @@
 /*
- * Copyright 2005, 2006 Michael Parker (shadowmatter AT gmail DOT com).
+ * Copyright Michael Parker (michael.g.parker@gmail.com).
  * 
  * This file is part of Blackjack Analyst.
  * 
@@ -20,7 +20,6 @@
 
 package blackjackanalyst;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -60,8 +59,7 @@ public class PlayerHand extends Hand {
 	 * Returns whether the hand is a pair, meaning it consists of two cards with
 	 * the same value. If a hand consists of a pair, it can be split.
 	 * 
-	 * @return <code>true</code> if the hand is a pair, <code>false</code>
-	 *         otherwise
+	 * @return {@code true} if the hand is a pair, {@code false} otherwise
 	 */
 	public boolean isPair() {
 		return ((cards.size() == 2) && (cards.get(0).getValue() == cards.get(1)
@@ -72,8 +70,8 @@ public class PlayerHand extends Hand {
 	 * Returns whether the hand has previously been split. Hands that have
 	 * previously been split cannot receive a blackjack.
 	 * 
-	 * @return <code>true</code> if the hand has previously been split,
-	 *         <code>false</code> otherwise
+	 * @return {@code true} if the hand has previously been split, {@code false}
+	 *         otherwise
 	 */
 	public boolean beenSplit() {
 		return beenSplit;
@@ -108,26 +106,26 @@ public class PlayerHand extends Hand {
 
 	/**
 	 * Returns the unique identifier of this bet for the round. The first bet made
-	 * by the player this round returns <code>0</code>; each successive bet
-	 * created by splitting increments the previous bet number.
+	 * by the player this round returns {@code 0}; each successive bet created by
+	 * splitting increments the previous bet number.
 	 * 
 	 * @return the unique identifier of this bet
 	 */
 	public int getBetNumber() {
 		int betNum = 0;
-		for (Iterator<PlayerHand> i = player.bets.iterator(); i.hasNext(); ++betNum) {
-			PlayerHand currHand = i.next();
-			if (currHand == this) {
+		for (PlayerHand hand : player.bets) {
+			if (hand == this) {
 				return betNum;
 			}
+			++betNum;
 		}
 		return -1;
 	}
 
 	/**
 	 * Returns all bets belonging to the player this round. This
-	 * <code>PlayerHand</code> object is found at the index returned by method
-	 * <code>getBetnumber</code>.
+	 * {@link PlayerHand} object is found at the index returned by method
+	 * {@link #getBetNumber()}.
 	 * 
 	 * @return all bets this round
 	 */
@@ -157,11 +155,10 @@ public class PlayerHand extends Hand {
 
 	/**
 	 * Returns whether the current hand is a blackjack. This method returns
-	 * <code>true</code> if the hand is an ace and a ten-valued card, and the hand
-	 * has not previously been split or the split card was not an ace.
+	 * {@code true} if the hand is an ace and a ten-valued card, and the hand has
+	 * not previously been split or the split card was not an ace.
 	 * 
-	 * @return <code>true</code> if the hand is a blackjack, <code>false</code>
-	 *         otherwise
+	 * @return {@code true} if the hand is a blackjack, {@code false} otherwise
 	 */
 	public boolean isBlackjack() {
 		// blackjack only if hand has not been split or split card is not an ace
