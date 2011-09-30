@@ -3,7 +3,7 @@ Blackjack Analyst
 
 Blackjack Analyst allows evaluation of blackjack playing strategies through extensive simulation.
 
-This code was previously hosted at http://www.sourceforge.net/projects/bjanalyst. (Unfortunate name, I know.)
+This code was previously hosted at http://www.sourceforge.net/projects/bjanalyst. (Unfortunate URL, I know.)
 
 How can I write my own strategies?
 ----------------------------------
