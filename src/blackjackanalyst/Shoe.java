@@ -20,6 +20,9 @@
 
 package blackjackanalyst;
 
+import blackjackanalyst.Card.Rank;
+import blackjackanalyst.Card.Suit;
+
 /**
  * A shoe, containing an integer number of card decks.
  * 
@@ -27,7 +30,8 @@ package blackjackanalyst;
  */
 class Shoe {
 	private final int numDecks;
-	private final Card[] shoeCards;
+	// Package-private for testing.
+	final Card[] cards;
 
 	private int nextCard;
 	private int shuffleMark;
@@ -44,10 +48,14 @@ class Shoe {
 		}
 
 		this.numDecks = numDecks;
-		shoeCards = new Card[numDecks * Card.CARDS_PER_DECK];
-		for (int i = 0; i < shoeCards.length; ++i) {
-			int cardId = i % Card.CARDS_PER_DECK;
-			shoeCards[i] = Card.getCard(cardId);
+		cards = new Card[numDecks * Card.CARDS_PER_DECK];
+		for (int i = 0, cardIndex = 0; i < numDecks; ++i) {
+			for (Suit suit : Card.Suit.values()) {
+				for (Rank rank : Card.Rank.values()) {
+					cards[cardIndex] = Card.getCard(rank, suit);
+					++cardIndex;
+				}
+			}
 		}
 
 		shuffle();
@@ -61,7 +69,7 @@ class Shoe {
 	 *         {@code false} otherwise
 	 */
 	public boolean isEmpty() {
-		return (nextCard == shoeCards.length);
+		return (nextCard == cards.length);
 	}
 
 	/**
@@ -70,7 +78,7 @@ class Shoe {
 	 * @return the number of cards left in the shoe
 	 */
 	public int getCardsLeft() {
-		return (shoeCards.length - nextCard);
+		return (cards.length - nextCard);
 	}
 
 	/**
@@ -99,12 +107,12 @@ class Shoe {
 		nextCard = 0;
 
 		MersenneTwister rng = MersenneTwister.getInstance();
-		for (int i = 0; i < shoeCards.length; ++i) {
-			int swapIndex = i + rng.nextInt(shoeCards.length - i);
+		for (int i = 0; i < cards.length; ++i) {
+			int swapIndex = i + rng.nextInt(cards.length - i);
 			if (swapIndex > i) {
-				Card temp = shoeCards[swapIndex];
-				shoeCards[swapIndex] = shoeCards[i];
-				shoeCards[i] = temp;
+				Card temp = cards[swapIndex];
+				cards[swapIndex] = cards[i];
+				cards[i] = temp;
 			}
 		}
 		shuffleMark = 2 * Card.CARDS_PER_DECK + rng.nextInt(Card.CARDS_PER_DECK);
@@ -117,6 +125,6 @@ class Shoe {
 	 * @return the next card from the shoe
 	 */
 	public Card getNextCard() {
-		return isEmpty() ? null : shoeCards[nextCard++];
+		return isEmpty() ? null : cards[nextCard++];
 	}
 }

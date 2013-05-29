@@ -29,12 +29,12 @@ public class Card {
 	/**
 	 * The number of card suits.
 	 */
-	public static final int CARD_SUITS = 4;
+	public static final int NUM_CARD_SUITS = 4;
 
 	/**
 	 * The number of card ranks.
 	 */
-	public static final int CARD_RANKS = 13;
+	public static final int NUM_CARD_RANKS = 13;
 
 	/**
 	 * The number of cards per deck.
@@ -55,22 +55,21 @@ public class Card {
 		TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE
 	};
 
-	protected static Suit[] ALL_SUITS = { Suit.CLUBS, Suit.DIAMONDS, Suit.HEARTS,
-	    Suit.SPADES };
+	private static RankValue[] RANK_VALUES = {
+	    new RankValue(Rank.TWO, 2), new RankValue(Rank.THREE, 3),
+	    new RankValue(Rank.FOUR, 4), new RankValue(Rank.FIVE, 5),
+	    new RankValue(Rank.SIX, 6), new RankValue(Rank.SEVEN, 7),
+	    new RankValue(Rank.EIGHT, 8), new RankValue(Rank.NINE, 9),
+	    new RankValue(Rank.TEN, 10), new RankValue(Rank.JACK, 10),
+	    new RankValue(Rank.QUEEN, 10), new RankValue(Rank.KING, 10),
+	    new RankValue(Rank.ACE, 1)
+	};
 
-	private static CardRank[] ALL_RANKS = { new CardRank(Rank.ACE, 1),
-	    new CardRank(Rank.TWO, 2), new CardRank(Rank.THREE, 3),
-	    new CardRank(Rank.FOUR, 4), new CardRank(Rank.FIVE, 5),
-	    new CardRank(Rank.SIX, 6), new CardRank(Rank.SEVEN, 7),
-	    new CardRank(Rank.EIGHT, 8), new CardRank(Rank.NINE, 9),
-	    new CardRank(Rank.TEN, 10), new CardRank(Rank.JACK, 10),
-	    new CardRank(Rank.QUEEN, 10), new CardRank(Rank.KING, 10) };
-
-	private static class CardRank {
+	private static class RankValue {
 		protected final Rank rank;
 		protected final int value;
 
-		protected CardRank(Rank rank, int value) {
+		protected RankValue(Rank rank, int value) {
 			this.rank = rank;
 			this.value = value;
 		}
@@ -80,12 +79,8 @@ public class Card {
 		}
 	}
 
-	private static Suit getCardSuit(int cardId) {
-		return ALL_SUITS[cardId / CARD_RANKS];
-	}
-
-	private static CardRank getCardRank(int cardId) {
-		return ALL_RANKS[cardId % CARD_RANKS];
+	private static RankValue getRankValue(int cardId) {
+		return RANK_VALUES[cardId % NUM_CARD_RANKS];
 	}
 
 	/**
@@ -100,45 +95,24 @@ public class Card {
 			throw new NullPointerException("Specified rank or suit is null");
 		}
 
-		int cardId = cardRank.ordinal() + CARD_SUITS * cardSuit.ordinal();
+		int cardId = cardRank.ordinal() + NUM_CARD_RANKS * cardSuit.ordinal();
 		if (ALL_CARDS == null) {
 			ALL_CARDS = new Card[CARDS_PER_DECK];
 		}
 		if (ALL_CARDS[cardId] == null) {
-			ALL_CARDS[cardId] = new Card(getCardRank(cardId), cardSuit, cardId);
+			ALL_CARDS[cardId] = new Card(getRankValue(cardId), cardSuit, cardId);
 		}
 		return ALL_CARDS[cardId];
 	}
-
-	/**
-	 * Returns the {@link Card} having the given unique numerical identifier.
-	 * 
-	 * @param cardId the numerical identifier of the card
-	 * @return the {@link Card} object having the given numerical identifier
-	 */
-	public static Card getCard(int cardId) {
-		if ((cardId < 0) || (cardId >= CARDS_PER_DECK)) {
-			throw new IllegalArgumentException("Card identifier is not in range");
-		}
-
-		if (ALL_CARDS == null) {
-			ALL_CARDS = new Card[CARDS_PER_DECK];
-		}
-		if (ALL_CARDS[cardId] == null) {
-			ALL_CARDS[cardId] = new Card(getCardRank(cardId), getCardSuit(cardId),
-			    cardId);
-		}
-		return ALL_CARDS[cardId];
-	}
-
+	
 	private static Card[] ALL_CARDS;
 
-	private final CardRank cardRank;
+	private final RankValue rankValue;
 	private final Suit suit;
 	private final int cardId;
 
-	private Card(CardRank cardRank, Suit suit, int cardId) {
-		this.cardRank = cardRank;
+	private Card(RankValue rankValue, Suit suit, int cardId) {
+		this.rankValue = rankValue;
 		this.suit = suit;
 		this.cardId = cardId;
 	}
@@ -149,7 +123,7 @@ public class Card {
 	 * @return the card rank
 	 */
 	public final Rank getRank() {
-		return cardRank.rank;
+		return rankValue.rank;
 	}
 
 	/**
@@ -168,7 +142,7 @@ public class Card {
 	 * @return the value of the card
 	 */
 	public int getValue() {
-		return cardRank.value;
+		return rankValue.value;
 	}
 
 	/**
@@ -177,7 +151,7 @@ public class Card {
 	 * @return {@code true} if this card is an ace, {@code false} otherwise
 	 */
 	public boolean isAce() {
-		return (cardRank.rank == Rank.ACE);
+		return (rankValue.rank == Rank.ACE);
 	}
 
 	/**
@@ -191,7 +165,7 @@ public class Card {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder(128);
-		sb.append(cardRank).append(" of ").append(suit);
+		sb.append(rankValue).append(" of ").append(suit);
 		return sb.toString();
 	}
 }
